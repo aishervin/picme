@@ -5,7 +5,7 @@ export async function onRequest(context) {
 
   if (!prompt) {
     return new Response(
-      `<html><body style="font-family:system-ui;text-align:center;padding:2rem">
+      /`<html><body style="font-family:system-ui;text-align:center;padding:2rem">
        <h2>🖼️ prompic</h2>
        <p>Add a prompt to the URL, e.g. <a href="/cyberpunk%20cat">/cyberpunk cat</a></p>
        </body></html>`,
@@ -24,7 +24,7 @@ export async function onRequest(context) {
     });
   } catch (err) {
     return new Response(
-      `Error: ${err.message}\n\nenv.AI type: ${typeof env.AI}\n\nStack: ${err.stack}`,
+      /`Error: ${err.message}\n\nenv.AI type: ${typeof env.AI}\n\nStack: ${err.stack}`,
       { headers: { "content-type": "text/plain" } }
     );
   }
