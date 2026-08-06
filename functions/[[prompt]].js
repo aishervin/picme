@@ -6,8 +6,8 @@ export async function onRequest(context) {
   if (!prompt) {
     return new Response(
       /`<html><body style="font-family:system-ui;text-align:center;padding:2rem">
-       <h2>🖼️ prompic</h2>
-       <p>Add a prompt to the URL, e.g. <a href="/cyberpunk%20cat">/cyberpunk cat</a></p>
+       <h2>®️SHΞN™ᴢᴇʀᴏ </h2>
+       <p>Add a prompt to the URL, e.g. <a href="/SHERVIN%20logotype">/SHERVIN Logotype</a></p>
        </body></html>`,
       { headers: { "content-type": "text/html;charset=UTF-8" } }
     );
