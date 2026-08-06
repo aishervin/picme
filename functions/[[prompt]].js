@@ -7,7 +7,7 @@ export async function onRequest(context) {
     return new Response(
       `<html><body style="font-family:system-ui;margin:0;padding:1rem;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background-color:#121212;color:#ffffff;box-sizing:border-box;">
        <div style="text-align:center;">
-         <h2 style="margin-bottom:0.5rem;">ᴘɪᴄ🎴ѕʜᴇɴ™ </h2>
+         <h2 style="margin-bottom:0.5rem;">PIC🎴SHΞN™ </h2>
          <p style="color:#b0b0b0;">Add prompt after URL, e.g. <a href="/SHERVIN%20logotype" style="color:#00e5ff;text-decoration:none;">Picshen.page.dev/SHERVIN Logotype</a></p>
        </div>
        </body></html>`,
