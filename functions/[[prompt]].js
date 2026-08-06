@@ -13,19 +13,19 @@ export async function onRequest(context) {
     );
   }
 
-  try {
+    try {
     const response = await env.AI.run(
-      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      "@cf/black-forest-labs/flux-1-schnell",
       { prompt }
     );
 
-    return new Response(response, {
-      headers: { "content-type": "image/png" }
+    // تبدیل داده base64 به بایت‌های تصویر
+    const binaryString = atob(response.image);
+    const imgBytes = Uint8Array.from(binaryString, (m) => m.codePointAt(0));
+
+    return new Response(imgBytes, {
+      headers: { "content-type": "image/jpeg" }
     });
   } catch (err) {
-    return new Response(
-      `Error: ${err.message}\n\nenv.AI type: ${typeof env.AI}\n\nStack: ${err.stack}`,
-      { headers: { "content-type": "text/plain" } }
-    );
+    // ...
   }
-}
