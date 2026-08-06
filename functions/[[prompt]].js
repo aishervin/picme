@@ -1,45 +1,36 @@
 export async function onRequest(context) {
-  const { request, env } = context;
+  const { request } = context;
   const url = new URL(request.url);
   const prompt = decodeURIComponent(url.pathname.slice(1)).trim();
 
   if (!prompt) {
     return new Response(
-      `<html>
-        <body style="font-family:system-ui;margin:0;padding:1rem;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background-color:#121212;color:#ffffff;box-sizing:border-box;">
-          <div style="text-align:center;">
-            <h2 style="margin-bottom:0.5rem;">SHΞN™🎴ᴘʀᴏᴍᴘɪᴄ</h2>
-            <p style="color:#b0b0b0;">
-              Add prompt after URL, e.g.<br>
-              <a href="/SHERVIN%20logotype"
-                 style="color:#00e5ff;text-decoration:underline;text-underline-offset:2px;">
-                Prompic.page.dev/SHERVIN Logotype
-              </a>
-            </p>
-          </div>
-        </body>
-      </html>`,
+      `<html><body style="font-family:system-ui;margin:0;padding:1rem;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background-color:#121212;color:#ffffff;">
+        <div style="text-align:center;">
+          <h2>SHΞN™🎴ᴘʀᴏᴍᴘɪᴄ</h2>
+          <p style="color:#b0b0b0;">Add prompt after URL<br>
+          <a href="/a cyberpunk cat" style="color:#00e5ff;">Example</a></p>
+        </div>
+      </body></html>`,
       { headers: { "content-type": "text/html;charset=UTF-8" } }
     );
   }
 
+  // گزینه A: Redirect مستقیم (ساده‌ترین)
+  // return Response.redirect(`https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}`);
+  
+  // گزینه B: Proxy (URL خودت حفظ می‌شه)
   try {
-    const response = await env.AI.run(
-      "@cf/black-forest-labs/flux-1-schnell",
-      { prompt }
-    );
-
-    // تبدیل داده base64 به بایت‌های تصویر
-    const binaryString = atob(response.image);
-    const imgBytes = Uint8Array.from(binaryString, (m) => m.codePointAt(0));
-
-    return new Response(imgBytes, {
-      headers: { "content-type": "image/jpeg" }
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?nologo=true&seed=${Math.floor(Math.random() * 100000)}`;
+    const imageResponse = await fetch(imageUrl);
+    
+    return new Response(imageResponse.body, {
+      headers: {
+        "content-type": "image/jpeg",
+        "cache-control": "public, max-age=3600"
+      }
     });
   } catch (err) {
-    return new Response(
-      `Error: ${err.message}\n\nenv.AI type: ${typeof env.AI}\n\nStack: ${err.stack}`,
-      { headers: { "content-type": "text/plain" } }
-    );
+    return new Response(`Error: ${err.message}`, { status: 500 });
   }
 }
