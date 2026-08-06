@@ -5,15 +5,17 @@ export async function onRequest(context) {
 
   if (!prompt) {
     return new Response(
-      `<html><body style="font-family:system-ui;text-align:center;padding:2rem">
-       <h2>®️SHΞN™ᴢᴇʀᴏ </h2>
-       <p>Add a prompt to the URL, e.g. <a href="/SHERVIN%20logotype">/SHERVIN Logotype</a></p>
+      `<html><body style="font-family:system-ui;margin:0;padding:1rem;min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;background-color:#121212;color:#ffffff;box-sizing:border-box;">
+       <div style="text-align:center;">
+         <h2 style="margin-bottom:0.5rem;">🎴SHΞN™ ᴘʀᴏᴍᴘɪᴄ </h2>
+         <p style="color:#b0b0b0;">Add a prompt to the URL, e.g. <a href="/SHERVIN%20logotype" style="color:#00e5ff;text-decoration:none;">/SHERVIN Logotype</a></p>
+       </div>
        </body></html>`,
       { headers: { "content-type": "text/html;charset=UTF-8" } }
     );
   }
 
-    try {
+  try {
     const response = await env.AI.run(
       "@cf/black-forest-labs/flux-1-schnell",
       { prompt }
@@ -27,5 +29,9 @@ export async function onRequest(context) {
       headers: { "content-type": "image/jpeg" }
     });
   } catch (err) {
-    // ...
+    return new Response(
+      `Error: ${err.message}\n\nenv.AI type: ${typeof env.AI}\n\nStack: ${err.stack}`,
+      { headers: { "content-type": "text/plain" } }
+    );
   }
+}
