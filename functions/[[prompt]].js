@@ -1,4 +1,4 @@
-  export async function onRequest(context) {
+export async function onRequest(context) {
   const { request, env } = context;
   const url = new URL(request.url);
   const prompt = decodeURIComponent(url.pathname.slice(1)).trim();
@@ -13,10 +13,18 @@
     );
   }
 
-  const response = await env.AI.run(
-    "@cf/stabilityai/stable-diffusion-xl-base-1.0",
-    { prompt }
-  );
+  try {
+    const response = await env.AI.run(
+      "@cf/stabilityai/stable-diffusion-xl-base-1.0",
+      { prompt }
+    );
 
-  return new Response(response, { headers: { "content-type": "image/png" } });
-}
+    return new Response(response, {
+      headers: { "content-type": "image/png" }
+    });
+  } catch (err) {
+    return new Response(
+      `Error: ${err.message}\n\nenv.AI type: ${typeof env.AI}\n\nStack: ${err.stack}`,
+      { headers: { "content-type": "text/plain" } }
+    );
+  }
